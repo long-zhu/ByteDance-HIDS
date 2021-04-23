@@ -35,6 +35,8 @@ var opts struct {
 	FilePath string `long:"file_path" description:"If data option is file ,this option is used to set the file path" default:"data.log"`
 	Addr     string `long:"addr" description:"If data option is kafka ,this option is used to set kafka addr"`
 	Topic    string `long:"topic" description:"If data option is kafka ,this option is used to set kafka topic name"`
+	Username string `long:"username" description:"SASL password of kafka"`
+	Password string `long:"password" description:"SASL username of kafka"`
 }
 
 func init() {
@@ -71,6 +73,11 @@ func main() {
 	case "kafka":
 		cfg := sarama.NewConfig()
 		cfg.Producer.Return.Successes = true
+		if opts.Username != "" && opts.Password != "" {
+			cfg.Net.SASL.Enable = true
+			cfg.Net.SASL.User = opts.Username
+			cfg.Net.SASL.Password = opts.Password
+		}
 		client, err := sarama.NewClient([]string{opts.Addr}, cfg)
 		if err != nil {
 			zap.S().Panic(err)
