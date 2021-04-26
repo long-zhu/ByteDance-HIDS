@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/bytedance/ByteDance-HIDS/agent/common"
 	"github.com/bytedance/ByteDance-HIDS/agent/plugin/procotol"
 	"github.com/bytedance/ByteDance-HIDS/agent/transport"
 
@@ -157,6 +158,23 @@ func Run() {
 						}
 						s.Delete(req.Name)
 						return
+					}
+					for index := range *data {
+						(*data)[index]["agent_id"] = common.AgentID
+						if len(common.PrivateIPv4) != 0 {
+							(*data)[index]["private_ipv4"] = common.PrivateIPv4[0]
+						}
+						if len(common.PrivateIPv6) != 0 {
+							(*data)[index]["private_ipv6"] = common.PrivateIPv6[0]
+						}
+						if len(common.PublicIPv4) != 0 {
+							(*data)[index]["public_ipv4"] = common.PublicIPv4[0]
+						}
+						if len(common.PublicIPv6) != 0 {
+							(*data)[index]["public_ipv6"] = common.PrivateIPv6[0]
+						}
+						(*data)[index]["hostname"] = common.Hostname
+						(*data)[index]["version"] = common.Version
 					}
 					transport.Send(data)
 				}
