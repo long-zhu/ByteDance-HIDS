@@ -171,7 +171,7 @@ func Run() {
 							(*data)[index]["public_ipv4"] = common.PublicIPv4[0]
 						}
 						if len(common.PublicIPv6) != 0 {
-							(*data)[index]["public_ipv6"] = common.PrivateIPv6[0]
+							(*data)[index]["public_ipv6"] = common.PublicIPv6[0]
 						}
 						(*data)[index]["hostname"] = common.Hostname
 						(*data)[index]["version"] = common.Version
